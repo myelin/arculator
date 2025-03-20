@@ -1,2 +1,33 @@
 .vscode
 
+# emacs backups
+*~
+
+# autotools
+/autom4te.cache
+/config.log
+/config.status
+Makefile.in
+
+# Build artifacts
+/modules.dmp
+/src/wx-resources.cc
+.deps
+.dirstamp
+.libs
+*.dylib
+*.la
+*.lo
+*.o
+
+# Binaries
+/arculator
+/src/arculator
+
+# Arculator output
+/arc.cfg
+/arclog.txt
+
+# hostfs, except for the README
+/hostfs/*
+!/hostfs/arculfs.txt
