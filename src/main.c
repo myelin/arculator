@@ -10,6 +10,7 @@
 #include "82c711.h"
 #include "82c711_fdc.h"
 #include "arc.h"
+#include "arcflash_serial.h"
 #include "arm.h"
 #include "cmos.h"
 #include "config.h"
@@ -66,6 +67,7 @@ int inssec;            /*Speed ratio percentage (100% = realtime emulation), upd
 int updatemips;        /*1 if MIPS counter has not been updated since last updateins() call*/
 static int frameco=0;  /*Number of 1/100 second executions (arm_run() calls) since last updateins()*/
 char exname[512];
+struct SerialPort serial_port;
 
 int jint,jtotal;
 
@@ -180,6 +182,7 @@ int arc_init()
 	keyboard_init();
 	resetmouse();
 	sound_init();
+	arcflash_serial_init(&serial_port);
 
 	fullscreen=0;
 	//mousehack=0;

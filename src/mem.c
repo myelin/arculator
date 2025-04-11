@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "arc.h"
+#include "arcflash_serial.h"
 #include "arm.h"
 #include "82c711.h"
 #include "82c711_fdc.h"
@@ -21,6 +22,9 @@
 #include "st506.h"
 #include "vidc.h"
 #include "wd1770.h"
+
+extern struct SerialPort serial_port;
+extern uint64_t tsc;
 
 uint64_t mem_speed[16384][2];
 
@@ -360,6 +364,10 @@ uint8_t readmemfb(uint32_t a)
 		return 0xff;
 
 		case 0x3f: /*Expansion ROMs*/
+		if ((a & 0xFFFFFFF0) == 0x3FFFFF0) {
+			/* Serial port addresses */
+			return arcflash_serial_read(&serial_port, a, tsc);
+		}
 		if (!support_rom_enabled)
 			break;
 		if ((a & 3) == 3)
@@ -503,6 +511,10 @@ uint32_t readmemfl(uint32_t a)
 		return (rom_5th_column[(a >> 2) & 0x1ffff] << 24) | 0xffffff;
 
 		case 0x3f: /*Expansion ROMs*/
+		if ((a & 0xFFFFFFF0) == 0x3FFFFF0) {
+			/* Serial port addresses */
+			return arcflash_serial_read(&serial_port, a, tsc);
+		}
 		if (!support_rom_enabled)
 			break;
 		return (rom_arcrom[(a >> 2) & 0xffff] << 24) | 0xffffff;
